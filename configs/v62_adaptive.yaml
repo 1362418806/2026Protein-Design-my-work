@@ -1,0 +1,143 @@
+# SynBio GFP V6.2 Evidence-Safe configuration
+# Goals: improve brightness safety, thermal robustness, recall of reusable structures,
+# and final evidence accuracy without regenerating structures unless new evidence is needed.
+seed: 42
+team_name: YourTeamName
+paths:
+  reference_sequences_file: AAseqs of 5 GFP proteins.txt
+  exclusion_list_file: Exclusion_List.csv
+  gfp_data_file: GFP_data.xlsx
+features:
+  mode: simple
+  esm_model: esm2_t30_150M_UR50D
+  batch_size: 8
+training:
+  max_train_samples: 20000
+  low_brightness_quantile: 0.2
+candidate_generation:
+  n_candidates: 20000
+selection:
+  min_len: 220
+  max_len: 250
+  low_brightness_risk_max: 0.25
+  max_mutation_count: 6
+v5:
+  final_k: 6
+  structure_top_n: 200
+  lambda_std: 0.75
+  require_real_structure_for_final: true
+  basic_gate:
+    max_protected_mutations: 0
+    max_pocket_mutations: 0
+    max_ion_network_mutations: 0
+    max_low_brightness_risk: 0.25
+    max_mutation_count: 6
+    max_chromophore_mutations: 0
+    max_core_mutations: 1
+  structure_gate:
+    max_barrel_rmsd: 1.50
+    max_pocket_rmsd: 0.85
+    max_ion_network_rmsd: 0.75
+    min_structure_geometry_score: 0.45
+    min_proteinmpnn_score_norm: 0.20
+structure:
+  enabled: true
+  top_n: 200
+  reference_pdb: null
+  predicted_pdb_dir: null
+  structure_metrics_csv: null
+proteinmpnn:
+  enabled: true
+  score_csv: null
+  score_column: proteinmpnn_score
+  lower_is_better: true
+  export_top_n: 200
+af_branch:
+  enabled: true
+  backend: colabfold
+  export_top_n: 200
+traceability:
+  enabled: true
+  write_stage_manifests: true
+  write_input_hashes: true
+  lineage_csv: v62_lineage.csv
+  stage_status_csv: v62_stage_status.csv
+  run_manifest_json: v62_run_manifest.json
+  artifact_index_csv: v62_artifact_index.csv
+v62:
+  brightness_teacher:
+    enabled: true
+    previous_ranked_csv: null
+    teacher_weight: 0.50
+    current_weight: 0.50
+  thermal_proxy:
+    enabled: true
+  artifact_contract:
+    freeze_candidate_universe: true
+    primary_join_key: sequence_sha1
+    require_frozen_stage4: true
+  structure_resolver:
+    policy: reuse-first
+    pdb_search_roots: []
+    chunk_size: 12
+    chunk_timeout_sec: 7200
+    chunk_retries: 1
+    colabfold_msa_mode: mmseqs2_uniref_env
+    continue_on_chunk_failure: true
+    single_sequence_default: false
+    completed_registry_filename: completed_structure_registry_v62.csv
+  final_constraints:
+    max_final_low_brightness_risk: 0.20
+    preferred_low_risk_count: 4
+    preferred_low_risk_max: 0.10
+    normal_max_mutation_count: 5
+    allow_one_mutation_count_6: true
+    require_real_structure: true
+    require_structure_pass: true
+  objective:
+    pre_structure_brightness_lcb: 0.35
+    pre_structure_low_risk: 0.25
+    post_structure_brightness_lcb: 0.28
+    post_structure_low_risk: 0.22
+    post_structure_geometry: 0.16
+    post_structure_proteinmpnn: 0.12
+v6:
+  feedback:
+    enabled: true
+    previous_ranked_csv: null
+    feedback_csv: null
+    feedback_candidate_fraction: 0.45
+    measured_only_policy: true
+    include_current_run_feedback: false
+    max_seed_rows: 160
+    fallback_good_rows: 80
+    max_success_low_risk: 0.25
+    min_success_pmpnn_norm: 0.35
+    whitelist_position_log_odds: 0.35
+    blacklist_position_log_odds: -0.65
+    whitelist_mutation_log_odds: 0.25
+    blacklist_mutation_log_odds: -0.65
+  structure_portfolio:
+    min_pairwise_hamming: 2
+    max_shared_mutations_per_pair: 4
+    max_shared_mutations_per_site: 20
+    quotas:
+      low_brightness_safe_conservative: 45
+      brightness_lcb_exploitation: 40
+      surface_patch_thermal: 35
+      loop_rigidity: 25
+      measured_feedback_repair: 35
+      diversity_reserve: 20
+  final_portfolio:
+    min_pairwise_hamming: 5
+    max_shared_mutations_per_pair: 3
+    max_shared_mutations_per_site: 2
+    max_per_source_branch: 2
+    mechanism_quotas:
+      brightness_lcb_exploitation: 1
+      surface_patch_thermal: 1
+      loop_rigidity: 1
+      measured_feedback_repair: 1
+      pmpnn_compatible: 1
+      diversity_reserve: 1
+  attribution_report: true

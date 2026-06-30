@@ -1,0 +1,26 @@
+seed: 42
+team_name: YourTeamName
+paths:
+  reference_sequences_file: "AAseqs of 5 GFP proteins.txt"
+  exclusion_list_file: "Exclusion_List.csv"
+  gfp_data_file: "GFP_data.xlsx"
+features:
+  mode: simple
+  esm_model: esm2_t30_150M_UR50D
+  batch_size: 16
+training:
+  max_train_samples: 20000
+  low_brightness_quantile: 0.20
+candidate_generation:
+  n_candidates: 20000
+selection:
+  min_len: 220
+  max_len: 250
+  low_brightness_risk_max: 0.55
+site_policy:
+  extra_protected_positions: []
+structure:
+  enabled: true
+  top_n: 200
+  reference_pdb: null
+  predicted_pdb_dir: null

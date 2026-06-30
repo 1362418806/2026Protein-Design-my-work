@@ -1,0 +1,63 @@
+seed: 42
+team_name: YourTeamName
+paths:
+  reference_sequences_file: "AAseqs of 5 GFP proteins.txt"
+  exclusion_list_file: "Exclusion_List.csv"
+  gfp_data_file: "GFP_data.xlsx"
+features:
+  mode: simple
+  esm_model: esm2_t30_150M_UR50D
+  batch_size: 16
+training:
+  max_train_samples: 20000
+  low_brightness_quantile: 0.20
+candidate_generation:
+  n_candidates: 20000
+selection:
+  min_len: 220
+  max_len: 250
+  low_brightness_risk_max: 0.35
+  max_mutation_count: 9
+v4:
+  final_k: 6
+  structure_top_n: 200
+  lambda_std: 0.75
+  require_real_structure_for_final: true
+  basic_gate:
+    max_protected_mutations: 0
+    max_pocket_mutations: 0
+    max_ion_network_mutations: 0
+    max_low_brightness_risk: 0.35
+    max_mutation_count: 9
+    max_chromophore_mutations: 0
+    max_core_mutations: 1
+  structure_gate:
+    max_barrel_rmsd: 1.50
+    max_pocket_rmsd: 0.85
+    max_ion_network_rmsd: 0.75
+    min_structure_geometry_score: 0.60
+    min_proteinmpnn_score_norm: 0.20
+  portfolio:
+    max_shared_mutations_per_site: 2
+    min_unique_source_branches: 2
+    prefer_layers:
+      - conservative_high_lcb
+      - tgp_surface_stabilized
+      - balanced_stability
+      - structure_verified
+structure:
+  enabled: true
+  top_n: 200
+  reference_pdb: null
+  predicted_pdb_dir: null
+  structure_metrics_csv: null
+proteinmpnn:
+  enabled: true
+  score_csv: null
+  score_column: proteinmpnn_score
+  lower_is_better: true
+  export_top_n: 200
+af_branch:
+  enabled: true
+  backend: af2_or_af3
+  export_top_n: 200

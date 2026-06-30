@@ -1,0 +1,119 @@
+# V7.2 controlled experiment matrix.
+# Each controlled structure ablation reuses an identical frozen candidate source.
+# ESM branches use independent candidate sources and are compared only as source diversity evidence.
+profiles:
+  quick_smoke:
+    - simple_cf_uniref_r1_top200
+  deadline_core:
+    - simple_cf_uniref_r1_top200
+    - simple_cf_uniref_env_r1_top200
+    - simple_cf_uniref_r3_top200
+    - esm150_cf_uniref_env_r1_top200
+  extended:
+    - simple_cf_uniref_r1_top200
+    - simple_cf_uniref_env_r1_top200
+    - simple_cf_uniref_r3_top200
+    - simple_cf_uniref_env_r3_top200
+    - esm35_cf_uniref_env_r1_top200
+    - esm150_cf_uniref_env_r1_top200
+    - simple_cf_single_sequence_neg_top80
+
+candidate_sources:
+  simple_anchor:
+    feature_mode: simple
+    esm_model: esm2_t30_150M_UR50D
+    max_train_samples: 20000
+    n_candidates: 20000
+  esm35:
+    feature_mode: esm
+    esm_model: esm2_t12_35M_UR50D
+    max_train_samples: 20000
+    n_candidates: 20000
+  esm150:
+    feature_mode: esm
+    esm_model: esm2_t30_150M_UR50D
+    max_train_samples: 20000
+    n_candidates: 20000
+
+experiments:
+  # Controlled MSA ablation: only the MSA corpus changes from the anchor.
+  - id: simple_cf_uniref_r1_top200
+    enabled: true
+    candidate_source: simple_anchor
+    msa_mode: mmseqs2_uniref
+    num_models: 1
+    num_recycle: 1
+    structure_top_n: 200
+    structure_runner: auto
+    run_proteinmpnn: true
+    diagnostic_only: false
+
+  - id: simple_cf_uniref_env_r1_top200
+    enabled: true
+    candidate_source: simple_anchor
+    msa_mode: mmseqs2_uniref_env
+    num_models: 1
+    num_recycle: 1
+    structure_top_n: 200
+    structure_runner: auto
+    run_proteinmpnn: true
+    diagnostic_only: false
+
+  # Controlled recycle ablation: only the number of recycles changes from the anchor.
+  - id: simple_cf_uniref_r3_top200
+    enabled: true
+    candidate_source: simple_anchor
+    msa_mode: mmseqs2_uniref
+    num_models: 1
+    num_recycle: 3
+    structure_top_n: 200
+    structure_runner: auto
+    run_proteinmpnn: true
+    diagnostic_only: false
+
+  # Interaction check. This is optional in the deadline profile but included in extended coverage.
+  - id: simple_cf_uniref_env_r3_top200
+    enabled: true
+    candidate_source: simple_anchor
+    msa_mode: mmseqs2_uniref_env
+    num_models: 1
+    num_recycle: 3
+    structure_top_n: 200
+    structure_runner: auto
+    run_proteinmpnn: true
+    diagnostic_only: false
+
+  # Independent sequence-embedding candidate sources improve source-diversity evidence.
+  - id: esm35_cf_uniref_env_r1_top200
+    enabled: true
+    candidate_source: esm35
+    msa_mode: mmseqs2_uniref_env
+    num_models: 1
+    num_recycle: 1
+    structure_top_n: 200
+    structure_runner: auto
+    run_proteinmpnn: true
+    diagnostic_only: false
+
+  - id: esm150_cf_uniref_env_r1_top200
+    enabled: true
+    candidate_source: esm150
+    msa_mode: mmseqs2_uniref_env
+    num_models: 1
+    num_recycle: 1
+    structure_top_n: 200
+    structure_runner: auto
+    run_proteinmpnn: true
+    diagnostic_only: false
+
+  # Negative control only. It is excluded from final matrix recommendation.
+  - id: simple_cf_single_sequence_neg_top80
+    enabled: true
+    candidate_source: simple_anchor
+    msa_mode: single_sequence
+    num_models: 1
+    num_recycle: 1
+    structure_top_n: 80
+    structure_runner: auto
+    run_proteinmpnn: true
+    diagnostic_only: true
