@@ -1,0 +1,27 @@
+{
+  "package": "synbio_gfp_v7_2_complete",
+  "base_package": "synbio_gfp_v7_1_auto_and_artifact_hotfix",
+  "base_zip_sha256": "79859c72a99cc550472f8cac73660d3abfd8df024d8afc8f6fc13f0255c0f941",
+  "created_utc": "2026-06-29T06:19:42+00:00",
+  "scope": [
+    "isolated controlled matrix runner",
+    "V7.2-only final artifacts",
+    "global-fit structural audit",
+    "PDB SHA256 and submission evidence audit",
+    "per-submission proxy reporting"
+  ],
+  "changed_files": {
+    "configs/v72_adaptive.yaml": "dc59526abb28a4b613eec934b7c3c0ebe07166582eee8465452e62fe422c7413",
+    "configs/v72_matrix.yaml": "be4ba7add9171c6e0fe5b733a571f33b387bc19c80a23991b545eed295f52895",
+    "deploy/env_v72.sh": "346f8ac16b81261d5394b2656ded05074ee6ee4105e0df3a325aaa312c3018fd",
+    "deploy/run_v72_matrix.sh": "b2c3f5cf333b9dd605af0f434d1680e67cbbcd90acbaf3befd19f1e1852b2ba0",
+    "deploy/run_v72_summarize_matrix.sh": "31ba3ff172c33933a119230c560e5dbd5966f005bf06172fadd258df3796b86b",
+    "scripts/run_v72_matrix.py": "6eaf1a6b26df3925cd3a52e4ca41b9db48b1f5300d06a1d6c1034f4544a041b6",
+    "scripts/run_v72_final_from_manifest.py": "fd01a6b8765ec86e8bdf4e54055340fe526cff2c687ea2667381222295825637",
+    "scripts/summarize_v72_matrix.py": "f0713d77263ae09793004ea32d71dd83fa2f07b04df57337b4a62124b6ac322a",
+    "tools/augment_structure_metrics_v72.py": "659166caec7dd656c0baf9f759aca940f1c439a918650e9323f72748228ab735",
+    "tools/audit_submission_v72.py": "44f8a92b9abb16983e8fa8e49d12a7e5b675bfafd49bdb16db5e49d4d7eec3cb",
+    "README_V72.md": "b5132fa1a7b2dc77d8112f5bede356fe721169aead2995d37583e9c9d9bd55b9",
+    "V72_DEPLOYMENT_SUMMARY.md": "a3748191b476c3a3d9ece88f6d27070a41209c389f4fb29c7f19d5fff7918e46"
+  }
+}
